@@ -43,7 +43,7 @@ class neuralNet:
                 self.error = 0
                 self.passForward(data[i:i+batchSize])
                 self.errorCalc(flags[i:i+batchSize])
-                self.back_pass(flags[i:i+batchSize])
+                self.passBackward(flags[i:i+batchSize])
                 i += batchSize
             self.error /= batchSize
             print("\nError: ", self.error)
@@ -90,7 +90,7 @@ class neuralNet:
         elif self.costFunc == "crossEntropyMethod":
             self.error += np.negative(np.sum(np.multiply(flags, np.log(self.layers[self.numLayers-1].activations))))
 
-    def back_pass(self, flags):
+    def passBackward(self, flags):
         # only if self.costFunc == "crossEntropyMethod" and self.layers[self.numLayers-1].activationFunc == "softMax":
         targets = flags
         i = self.numLayers-1
@@ -120,7 +120,7 @@ class neuralNet:
         a[np.where(a!=np.max(a))] = 0
         return a
 
-    def check_accuracy(self, dataFile, data, flags):
+    def checkAccuracy(self, dataFile, data, flags):
         dill.load_session(dataFile)
         self.batchSize = len(data)
         self.passForward(data)
@@ -137,7 +137,7 @@ class neuralNet:
 
 
 
-    def load_model(self, dataFile):
+    def loadModel(self, dataFile):
         dill.load_session(dataFile)
 
 
